@@ -2,7 +2,7 @@ import os
 import sqlite3
 
 from flask import Flask, redirect, render_template, request, session, url_for
-from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from database.db import create_user, get_db, get_user_by_email, init_db, seed_db
 
@@ -22,6 +22,13 @@ with app.app_context():
 _MAX_NAME_LENGTH = 100
 _MIN_PASSWORD_LENGTH = 8
 _DUPLICATE_EMAIL_ERROR = "An account with that email is already registered."
+_LOGIN_ERROR = "Incorrect email or password."
+
+# Checked in place of a real hash when no user matches, so that a failed login
+# costs the same amount of work whether or not the email exists. Without it,
+# unknown-email responses return measurably faster than wrong-password ones,
+# which lets an attacker enumerate registered accounts.
+_DUMMY_PASSWORD_HASH = generate_password_hash("spendly-timing-equalizer")
 
 
 def _validate_registration(name, email, password):
@@ -85,19 +92,42 @@ def register():
     return redirect(url_for("profile"))
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("login.html")
+    if request.method == "GET":
+        if session.get("user_id"):
+            return redirect(url_for("profile"))
+        return render_template("login.html")
+
+    email = request.form.get("email", "").strip().lower()
+    password = request.form.get("password", "")
+
+    user = get_user_by_email(email)
+
+    # Always verify a hash, even when no user matched, to keep the response
+    # time the same for unknown emails and wrong passwords.
+    stored_hash = user["password_hash"] if user is not None else _DUMMY_PASSWORD_HASH
+    password_ok = check_password_hash(stored_hash, password)
+
+    if user is None or not password_ok:
+        return render_template("login.html", error=_LOGIN_ERROR, email=email)
+
+    # Drop any pre-existing session before authenticating, so a planted
+    # session cookie cannot survive the login.
+    session.clear()
+    session["user_id"] = user["id"]
+    return redirect(url_for("profile"))
+
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    session.clear()
+    return redirect(url_for("landing"))
 
 
 # ------------------------------------------------------------------ #
 # Placeholder routes — students will implement these                  #
 # ------------------------------------------------------------------ #
-
-@app.route("/logout")
-def logout():
-    return "Logout — coming in Step 3"
-
 
 @app.route("/profile")
 def profile():
