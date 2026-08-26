@@ -39,3 +39,5 @@ There is no lint/format tooling configured in this repo.
 ## Current state / what's left
 
 The database layer (Step 1) is done. Routes in `app.py` marked "Placeholder routes — students will implement these" still return plain strings, not templates: `/logout`, `/profile`, `/expenses/add`, `/expenses/<id>/edit`, `/expenses/<id>/delete`. There is no session/auth handling and no expense model/business logic yet — these all need to be built on top of the `database/db.py` functions described above.
+
+`/register` and `/login` are outside that placeholder block and already render their templates, but only handle `GET` — there's no `POST` method on either route yet, so submitting either form 405s. The templates are ahead of the backend here: forms, field names, and the `error`/`.auth-error` block are already wired up and waiting on the `POST` handlers (password hashing/verification via `werkzeug.security`, session creation) to be added.
