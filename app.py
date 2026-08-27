@@ -53,6 +53,47 @@ def _validate_registration(name, email, password):
 
 
 # ------------------------------------------------------------------ #
+# Profile page sample data                                            #
+# ------------------------------------------------------------------ #
+
+# Step 4 builds the profile UI against fixed sample data so the layout can be
+# reviewed on its own. Step 5 replaces every one of these constants with real
+# queries against the expenses table — nothing here touches the database.
+
+_PROFILE_USER = {
+    "initials": "DU",
+    "name": "Demo User",
+    "email": "demo@spendly.com",
+    "member_since": "January 2026",
+}
+
+_PROFILE_STATS = [
+    {"icon": "\u20b9", "label": "Total spent", "value": "\u20b912,450", "note": "This month"},
+    {"icon": "\u25ce", "label": "Transactions", "value": "28", "note": "This month"},
+    {"icon": "\u25f7", "label": "Top category", "value": "Bills", "note": "\u20b94,500 spent"},
+]
+
+_PROFILE_TRANSACTIONS = [
+    {"date": "24 Aug", "description": "Electricity bill", "category": "Bills", "amount": "\u20b92,400"},
+    {"date": "22 Aug", "description": "Groceries run", "category": "Food", "amount": "\u20b91,180"},
+    {"date": "19 Aug", "description": "Metro card top-up", "category": "Transport", "amount": "\u20b9600"},
+    {"date": "17 Aug", "description": "Pharmacy", "category": "Health", "amount": "\u20b9480"},
+    {"date": "14 Aug", "description": "Movie night", "category": "Entertainment", "amount": "\u20b9750"},
+    {"date": "11 Aug", "description": "New running shoes", "category": "Shopping", "amount": "\u20b93,200"},
+]
+
+# ``bar`` names a fixed-width utility class rather than an inline style, so the
+# template stays free of style attributes.
+_PROFILE_CATEGORIES = [
+    {"name": "Bills", "amount": "\u20b94,500", "share": "36%", "bar": "cat-bar--w72"},
+    {"name": "Shopping", "amount": "\u20b93,200", "share": "26%", "bar": "cat-bar--w52"},
+    {"name": "Food", "amount": "\u20b92,050", "share": "16%", "bar": "cat-bar--w33"},
+    {"name": "Transport", "amount": "\u20b91,750", "share": "14%", "bar": "cat-bar--w28"},
+    {"name": "Health", "amount": "\u20b9950", "share": "8%", "bar": "cat-bar--w15"},
+]
+
+
+# ------------------------------------------------------------------ #
 # Routes                                                              #
 # ------------------------------------------------------------------ #
 
@@ -125,14 +166,24 @@ def logout():
     return redirect(url_for("landing"))
 
 
+@app.route("/profile")
+def profile():
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    return render_template(
+        "profile.html",
+        user=_PROFILE_USER,
+        stats=_PROFILE_STATS,
+        transactions=_PROFILE_TRANSACTIONS,
+        categories=_PROFILE_CATEGORIES,
+        current_user_name=_PROFILE_USER["name"],
+    )
+
+
 # ------------------------------------------------------------------ #
 # Placeholder routes — students will implement these                  #
 # ------------------------------------------------------------------ #
-
-@app.route("/profile")
-def profile():
-    return "Profile page — coming in Step 4"
-
 
 @app.route("/expenses/add")
 def add_expense():

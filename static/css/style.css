@@ -19,11 +19,29 @@
     --border: #e4e1da;
     --border-soft: #eeebe4;
 
+    /* Category palette — one pair per fixed category, warm/editorial register.
+       Food/Bills/Other reuse existing hues so the set stays coherent. */
+    --cat-food: #1a472a;
+    --cat-food-bg: #e8f0eb;
+    --cat-transport: #5b7fa6;
+    --cat-transport-bg: #e9eef4;
+    --cat-bills: #c17f24;
+    --cat-bills-bg: #fdf3e3;
+    --cat-health: #8b5e83;
+    --cat-health-bg: #f3ebf1;
+    --cat-entertainment: #a65d3f;
+    --cat-entertainment-bg: #f7ebe5;
+    --cat-shopping: #6b7f5b;
+    --cat-shopping-bg: #eef2e9;
+    --cat-other: #6b6b6b;
+    --cat-other-bg: #f0efec;
+
     --font-display: 'DM Serif Display', Georgia, serif;
     --font-body: 'DM Sans', system-ui, sans-serif;
 
     --max-width: 1200px;
     --auth-width: 440px;
+    --profile-width: 920px;
 
     --radius-sm: 6px;
     --radius-md: 12px;
@@ -114,6 +132,16 @@ a { color: inherit; text-decoration: none; }
 .nav-cta:hover { background: var(--accent) !important; }
 
 .nav-logout-form { display: flex; }
+
+.nav-user {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
 .nav-logout {
     background: none;
@@ -494,6 +522,291 @@ a { color: inherit; text-decoration: none; }
 .auth-switch a:hover { text-decoration: underline; }
 
 /* ------------------------------------------------------------------ */
+/* Profile                                                             */
+/* ------------------------------------------------------------------ */
+
+.profile-section {
+    padding: 3.5rem 2rem 4.5rem;
+}
+
+.profile-container {
+    width: 100%;
+    max-width: var(--profile-width);
+    margin: 0 auto;
+}
+
+.profile-block {
+    margin-top: 2.5rem;
+}
+
+.profile-block-title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--ink);
+    margin-bottom: 1rem;
+}
+
+.profile-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-identity {
+    text-align: center;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.profile-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 1rem;
+    border-radius: 999px;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+}
+
+.profile-name {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    color: var(--ink);
+    margin-bottom: 0.35rem;
+}
+
+.profile-email {
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+}
+
+.profile-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 0.75rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.profile-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.profile-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+}
+
+.profile-value {
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    overflow-wrap: anywhere;
+}
+
+.profile-note {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+    margin-top: 1.5rem;
+}
+
+/* Summary stats ----------------------------------------------------- */
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+}
+
+.stat-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+}
+
+.stat-icon {
+    font-size: 1.25rem;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.4rem;
+}
+
+.stat-value {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    color: var(--ink);
+    line-height: 1.2;
+}
+
+.stat-note {
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    margin-top: 0.35rem;
+}
+
+/* Transaction table -------------------------------------------------- */
+
+.tx-table-wrap {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+}
+
+.tx-table {
+    width: 100%;
+    min-width: 520px;
+    border-collapse: collapse;
+}
+
+.tx-table th {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: left;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.tx-table td {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.tx-table tbody tr:last-child td { border-bottom: none; }
+
+.tx-table tbody tr:hover { background: var(--paper); }
+
+.tx-date {
+    color: var(--ink-muted);
+    white-space: nowrap;
+}
+
+.tx-amount {
+    text-align: right;
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+}
+
+.tx-empty {
+    padding: 2.5rem 1.25rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--ink-faint);
+}
+
+/* Category badges ---------------------------------------------------- */
+
+.cat-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.cat-badge--food { color: var(--cat-food); background: var(--cat-food-bg); }
+.cat-badge--transport { color: var(--cat-transport); background: var(--cat-transport-bg); }
+.cat-badge--bills { color: var(--cat-bills); background: var(--cat-bills-bg); }
+.cat-badge--health { color: var(--cat-health); background: var(--cat-health-bg); }
+.cat-badge--entertainment { color: var(--cat-entertainment); background: var(--cat-entertainment-bg); }
+.cat-badge--shopping { color: var(--cat-shopping); background: var(--cat-shopping-bg); }
+.cat-badge--other { color: var(--cat-other); background: var(--cat-other-bg); }
+
+/* Category breakdown -------------------------------------------------- */
+
+.cat-breakdown {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.cat-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 90px 48px;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cat-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+}
+
+.cat-track {
+    height: 6px;
+    background: var(--border-soft);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.cat-bar {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--accent);
+}
+
+.cat-bar--food { background: var(--cat-food); }
+.cat-bar--transport { background: var(--cat-transport); }
+.cat-bar--bills { background: var(--cat-bills); }
+.cat-bar--health { background: var(--cat-health); }
+.cat-bar--entertainment { background: var(--cat-entertainment); }
+.cat-bar--shopping { background: var(--cat-shopping); }
+.cat-bar--other { background: var(--cat-other); }
+
+/* Fixed widths as classes — the sample data is static, and the page rules
+   out inline style attributes. */
+.cat-bar--w72 { width: 72%; }
+.cat-bar--w52 { width: 52%; }
+.cat-bar--w33 { width: 33%; }
+.cat-bar--w28 { width: 28%; }
+.cat-bar--w15 { width: 15%; }
+
+.cat-amount {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-align: right;
+    white-space: nowrap;
+}
+
+.cat-share {
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    text-align: right;
+}
+
+/* ------------------------------------------------------------------ */
 /* Footer                                                              */
 /* ------------------------------------------------------------------ */
 
@@ -538,9 +851,18 @@ a { color: inherit; text-decoration: none; }
     .hero-visual { display: none; }
 
     .features-inner { grid-template-columns: 1fr; }
+
+    .stat-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 600px) {
     .nav-links a:not(.nav-cta) { display: none; }
+    .nav-user { display: none; }
     .hero { padding: 3rem 1rem 2rem; }
+
+    .profile-section { padding: 2.25rem 1rem 3rem; }
+    .profile-card { padding: 1.5rem; }
+    .cat-breakdown { padding: 1.25rem; }
+    .cat-row { grid-template-columns: 84px 1fr 76px; }
+    .cat-share { display: none; }
 }
